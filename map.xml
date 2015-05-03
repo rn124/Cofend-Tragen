@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<map proto="1.3.3">
+	<name>Cofend Tragen</name>
+	<version>1.0.0</version>
+	<objective>敵陣の羊毛部屋から羊毛を奪取し、台座に設置 / Grab the wool on the enemy side and place it on your victory monument.</objective>
+	<authors>
+		<author>rn01_24</author>
+	</authors>
+	<teams>
+		<team color="blue" max="32">Blue Team</team>
+		<team color="dark_red" max="32">Red Team</team>
+	</teams>
+	<kits>
+		<kit name="spawn">
+			<item slot="0">iron sword</item>
+			<item slot="1">bow</item>
+			<item slot="2" enchantment="dig_speed:1">iron pickaxe</item>
+			<item slot="3">stone spade</item>
+			<item slot="4" enchantment="dig_speed:1;durability:2">iron axe</item>
+			<item slot="5" amount="64" damage="1">log</item>
+			<item slot="6" amount="64">glass</item>
+			<item slot="7">golden apple</item>
+			<item slot="8" amount="64">cooked beef</item>
+			<item slot="28" amount="64">arrow</item>
+			<item slot="29" amount="64">arrow</item>
+			<chestplate bind="true">leather chestplate</chestplate>
+		</kit>
+		<kit name="blue" parents="spawn">
+			<leggings color="5555FF" bind="true">leather leggings</leggings>
+			<boots color="5555FF" enchantment="protection_fall:1" bind="true">leather boots</boots>
+		</kit>
+		<kit name="red" parents="spawn">
+			<leggings color="FF5555" bind="true">leather leggings</leggings>
+			<boots color="FF5555" enchantment="protection_fall:1" bind="true">leather boots</boots>
+		</kit>
+	</kits>
+	<itemremove>
+		<item>iron sword</item>
+		<item>bow</item>
+		<item>iron pickaxe</item>
+		<item>stone spade</item>
+		<item>iron axe</item>
+		<item>log</item>
+		<item>wood</item>
+		<item>glass</item>
+		<item>golden apple</item>
+		<item>cooked beef</item>
+		<item>arrow</item>
+		<item>leather chestplate</item>
+		<item>leather leggings</item>
+		<item>leather boots</item>
+		<item>iron helmet</item>
+		<item>iron chestplate</item>
+		<item>iron leggings</item>
+		<item>iron boots</item>
+		<item>wool</item>
+		<item>potion</item>
+		<item>diamond chestplate</item>
+		<item>nether star</item>
+		<item>iron spade</item>
+	</itemremove>
+	<spawns>
+		<spawn team="blue" yaw="90" kit="blue">
+			<cuboid min="38,42,-1" max="39,42,1"/>
+		</spawn>
+		<spawn team="red" yaw="-90" kit="red">
+			<cuboid min="-38,42,-1" max="-39,42,1"/>
+		</spawn>
+		<default yaw="0">
+			<cuboid min="1,58.5,-68" max="1,58.5,-70"/>
+		</default>
+	</spawns>
+	<filters>
+		<filter name="only-blue">
+			<team>blue</team>
+		</filter>
+		<filter name="only-red">
+			<team>red</team>
+		</filter>
+		<filter name="allow-breaks">
+			<block>iron block</block>
+		</filter>
+		<filter name="deny-woolroom">
+			<deny>
+				<block>chest</block>
+			</deny>
+		</filter>
+		<filter name="no-void">
+			<not><void/></not>
+		</filter>
+		</filters>
+	<regions>
+		<cuboid min="-89,0,6" max="-78,255,-6" name="light-blue"/>
+		<cuboid min="89,0,6" max="78,255,-6" name="pink"/>
+		<cuboid min="-107,0,-5" max="-122,255,5" name="red-spawn"/>
+		<cuboid min="107,0,-5" max="122,255,5" name="blue-spawn"/>
+		<cuboid min="55,0,6" max="31,255,-6" name="blue-base"/>
+		<cuboid min="-55,0,6" max="-31,255,-6" name="red-base"/>
+		<union name="base">
+			<region name="blue-base"/>
+			<region name="red-base"/>
+			<region name="blue-spawn"/>
+			<region name="red-spawn"/>
+		</union>
+		<union name="blue-bases">
+			<region name="blue-base"/>
+			<region name="blue-spawn"/>
+		</union>
+		<union name="red-bases">
+			<region name="red-base"/>
+			<region name="red-spawn"/>
+		</union>
+		<complement name="bases">
+			<region name="base"/>
+			<block>48,42,0</block>
+			<block>-48,42,0</block>
+		</complement>
+		<apply block="deny-woolroom" message="羊毛部屋のチェストは編集出来ません。/ You may not modify wool room chest.">
+			<region name="light-blue"/>
+			<region name="pink"/>
+		</apply>
+		<apply block-break="allow-breaks" block-place="deny-place" message="拠点は編集出来ません。/ You may not modify base.">
+			<region name="bases"/>
+		</apply>
+		<apply block="only-blue" message="自陣の羊毛部屋は編集出来ません。/ You may not modify your own wool room.">
+			<region name="light-blue"/>
+		</apply>
+		<apply block="only-red" message="自陣の羊毛部屋は編集出来ません。/ You may not modify your own wool room.">
+			<region name="pink"/>
+		</apply>
+		<apply enter="only-blue" message="自陣の羊毛部屋へは進入出来ません。/ You may not enter your own wool room.">
+			<region name="light-blue"/>
+		</apply>
+		<apply enter="only-red" message="自陣の羊毛部屋へは進入出来ません。/ You may not enter your own wool room.">
+			<region name="pink"/>
+		</apply>
+		<apply enter="only-blue" message="敵陣の拠点へは進入出来ません。/ You may not enter enemy base.">
+			<region name="blue-bases"/>
+		</apply>
+		<apply enter="only-red" message="敵陣の拠点へは進入出来ません。/ You may not enter enemy base.">
+			<region name="red-bases"/>
+		</apply>
+		<apply block="no-void" message="Voidは編集出来ません。/ You may not modify void area.">
+			<rectangle min="-oo,-oo" max="oo,oo"/>
+		</apply>
+	</regions>
+	<blockdrops>
+		<rule>
+			<region>
+				<block>87,31,0</block>
+			</region>
+			<filter>
+				<block>wool</block>
+			</filter>
+			<drops>
+				<item damage="6">wool</item>
+			</drops>
+			<replacement>wool:6</replacement>
+			<direct>true</direct>
+			<wrongtool>true</wrongtool>
+		</rule>
+		<rule>
+			<region>
+				<block>-87,31,0</block>
+			</region>
+			<filter>
+				<block>wool</block>
+			</filter>
+			<drops>
+				<item damage="3">wool</item>
+			</drops>
+			<replacement>wool:3</replacement>
+			<direct>true</direct>
+			<wrongtool>true</wrongtool>
+		</rule>
+	</blockdrops>
+	<renewables>
+		<renewable rate="10" particles="true" sound="true" avoid-entities="true">
+			<region>
+				<region name="bases"/>
+			</region>
+			<renew>iron block</renew>
+			<replace>air</replace>
+		</renewable>
+	</renewables>
+	<killreward>
+		<item amount="1">golden apple</item>
+	</killreward>
+	<portals>
+		<!-- Blue Base to Blue Spawn -->
+		<portal x="@117" y="@30" z="@0" yaw="180">
+			<cuboid min="53,40,-1" max="53,45,1"/>
+		</portal>
+		<!-- Red Base to Red Spawn -->
+		<portal x="@-117" y="@30" z="@0" yaw="180">
+			<cuboid min="-53,40,-1" max="-53,45,1"/>
+		</portal>
+		<!-- Blue Spawn to Blue Base -->
+		<portal x="@39" y="@41" z="@0" yaw="180">
+			<cuboid min="120,29,-1" max="120,34,1"/>
+		</portal>
+		<!-- Red Spawn to Red Base -->
+		<portal x="@-39" y="@41" z="@0" yaw="180">
+			<cuboid min="-120,29,-1" max="-120,34,1"/>
+		</portal>
+	</portals>
+	<maxbuildheight>54</maxbuildheight>
+	<autorespawn time="7s"/>
+	<wools>
+		<wool team="blue" color="light blue">
+			<block location="48,42,0"/>
+		</wool>
+		<wool team="red" color="pink">
+			<block location="-48,42,0"/>
+		</wool>
+	</wools>
+<include src="tutorial.xml"/>
+	<tutorial>
+		<stage title="Capture the Wool (CTW)">
+			<message>
+				<line>This map is a `a`lCapture the Wool`r (CTW) map.</line>
+				<line>The objective is to grab the wool on the enemy side and place it on your victory monument.</line>
+			</message>
+			<message lang="ja_JP">
+				<line>このマップは `a`lCapture the Wool`r (CTW) マップです。</line>
+				<line>敵陣の羊毛部屋から羊毛を奪取し、台座に設置する事が目標になります。</line>
+			</message>
+			<teleport>
+				<point yaw="0" pitch="90">0,100,0</point>
+			</teleport>
+		</stage>
+		<stage title="Blue spawn">
+			<title lang="ja_JP">Blueチームの拠点</title>
+			<message>
+				<line>Here is `9Blue Team`r base.</line>
+			</message>
+			<message lang="ja_JP">
+				<line>ここは`9Blueチーム`rの拠点です。</line>
+			</message>
+			<teleport>
+				<point yaw="135" pitch="40">43,45,3</point>
+			</teleport>
+		</stage>
+		<stage title="Red Team's Wool rooms">
+			<title lang="ja_JP">Redチームの羊毛部屋</title>
+			<message>
+				<line>`9Blue Team`r side has `dPink`r wool room.</line>
+				<line>`4Red Team`r side has `9Light Blue`r wool room.</line>
+				<line>`4Red Team`r should defend this room against enemy who are trying to steal the wool.</line>
+			</message>
+			<message lang="ja_JP">
+				<line>`9Blueチーム`rの陣地には`dPink`rの羊毛部屋があります。</line>
+				<line>`4Redチーム`rの陣地には`9Light Blue`rの羊毛部屋があります。</line>
+				<line>`4Redチーム`rは羊毛を奪取しようとする敵の攻撃からこの羊毛部屋を防衛する必要があります。</line>
+			</message>
+			<teleport>
+				<point yaw="135" pitch="45">-76,40,9</point>
+			</teleport>
+		</stage>
+
+		<stage title="Place Point">
+			<title lang="ja_JP">羊毛設置台</title>
+			<message>
+				<line>Victory monument is in the base.</line>
+			</message>
+			<message lang="ja_JP">
+				<line>羊毛を設置する台座は自拠点の中にあります。</line>
+			</message>
+			<teleport>
+				<point yaw="-120" pitch="0">-51,41,2</point>
+			</teleport>
+		</stage>
+		<stage title="glhf">
+			<title lang="ja_JP">glhf</title>
+			<message>
+				<line>Good Luck! Have Fun!</line>
+			</message>
+			<message lang="ja_JP">
+				<line>それではお楽しみください！</line>
+			</message>
+		</stage>
+	</tutorial>
+</map>
